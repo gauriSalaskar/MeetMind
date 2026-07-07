@@ -1,0 +1,16 @@
+# Deploy alongside your existing MeetMind backend web service on Render.
+# This defines a separate Background Worker that runs commitment_workflow.py.
+
+services:
+  - type: worker
+    name: meetmind-commitment-workflow
+    runtime: python
+    buildCommand: pip install -r workflow/requirements.txt
+    startCommand: python workflow/commitment_workflow.py
+    envVars:
+      - key: MEETMIND_API_BASE
+        value: https://your-backend.onrender.com/api
+      - key: MEETMIND_SERVICE_TOKEN
+        sync: false   # paste a long-lived service JWT here in the Render dashboard
+      - key: MEETMIND_POLL_INTERVAL
+        value: "30"   # seconds; use 3600 (hourly) in real production use
