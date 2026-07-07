@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: #E3E9ED;
+  color: #161F24;
+  font-family: 'Nunito Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+/* Cool "glass panel" surface -- Ocean Slate theme */
+.glass {
+  background: rgba(250, 252, 253, 0.85);
+  border: 1px solid rgba(61, 79, 88, 0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-hover {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.glass-hover:hover {
+  border-color: rgba(31, 86, 112, 0.35);
+  box-shadow: 0 8px 30px -10px rgba(31, 86, 112, 0.30);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #E3E9ED;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(31, 86, 112, 0.35);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(31, 86, 112, 0.55);
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(61, 79, 88, 0.06) 25%,
+    rgba(61, 79, 88, 0.14) 37%,
+    rgba(61, 79, 88, 0.06) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Focus visibility */
+:focus-visible {
+  outline: 2px solid #1F5670;
+  outline-offset: 2px;
+}
+
+/* Gradient text -- ocean blue/amber instead of warm terracotta */
+.text-gradient {
+  background: linear-gradient(135deg, #1F5670 0%, #4A7E99 50%, #6FA9C2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Pill badges for commitment status */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.pill-open { background: rgba(206, 138, 46, 0.15); color: #8A6218; }
+.pill-due_today { background: rgba(111, 169, 194, 0.35); color: #163F52; }
+.pill-overdue { background: rgba(31, 86, 112, 0.18); color: #163F52; }
+.pill-done { background: rgba(61, 79, 88, 0.10); color: #71858F; text-decoration: line-through; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
