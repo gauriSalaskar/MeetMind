@@ -6,7 +6,7 @@ language. Audio comes in from the frontend recorder, gets sent to Sarvam's
 Speech-to-Text API, and the returned transcript is fed into the same
 meeting-save + commitment-extraction pipeline as typed text.
 
-Docs: https://docs.sarvam.ai (Speech-to-Text API, `saarika` model family).
+Docs: https://docs.sarvam.ai (Speech-to-Text API, saaras:v3 model).
 If SARVAM_API_KEY is not set, this raises a clear error rather than failing
 silently, since voice input is a required feature for this build.
 """
@@ -40,7 +40,14 @@ def transcribe_audio(file_storage, language_code: str = "unknown") -> dict:
 
     headers = {"api-subscription-key": Config.SARVAM_API_KEY}
     files = {"file": (file_storage.filename or "audio.wav", file_storage.stream, file_storage.mimetype)}
-    data = {"model": "saarika:v2.5", "language_code": language_code}
+    data = {"model": "saaras:v3", "mode": "transcribe", "language_code": language_code}
+
+    print(
+        f"[SARVAM DEBUG] sending filename={file_storage.filename} "
+        f"mimetype={file_storage.mimetype} language_code={language_code}",
+        flush=True,
+    )
+
     try:
         resp = requests.post(SARVAM_STT_URL, headers=headers, files=files, data=data, timeout=60)
     except requests.RequestException as exc:
@@ -50,6 +57,8 @@ def transcribe_audio(file_storage, language_code: str = "unknown") -> dict:
         raise SarvamError(f"Sarvam AI error ({resp.status_code}): {resp.text[:300]}")
 
     body = resp.json()
+    print(f"[SARVAM DEBUG] full response: {body}", flush=True)
+
     return {
         "transcript": (body.get("transcript") or "").strip(),
         "language_code": body.get("language_code", language_code),
